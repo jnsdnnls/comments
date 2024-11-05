@@ -1,0 +1,37 @@
+{
+    "name": "jnsdnnls/comments",
+    "autoload": {
+        "psr-4": {
+            "Jnsdnnls\\Comments\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jnsdnnls\\Comments\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "statamic/cms": "^5.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Comments",
+            "description": "Comments addon"
+        },
+        "laravel": {
+            "providers": [
+                "Jnsdnnls\\Comments\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
