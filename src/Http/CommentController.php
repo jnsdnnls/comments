@@ -27,6 +27,9 @@ class CommentController extends Controller
         $user = Auth::user();
 
         $commentData = [
+            'name' => $user->name(),  // Use the logged-in user's name
+            'post_id' => $request->input('post_id'),
+            'comment_id' => uniqid(),  // Generate a unique ID for the comment
             'email' => $user->email(),  // Use the logged-in user's email
             'content' => $request->input('content'),
             'created_at' => now()->toDateTimeString(),

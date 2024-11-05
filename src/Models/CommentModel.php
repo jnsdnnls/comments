@@ -49,9 +49,48 @@ class CommentModel
         $files = File::getFiles(base_path('resources/comments'));
 
         foreach ($files as $file) {
-            $comments = array_merge($comments, YAML::file($file)->parse());
+            // Parse the YAML file and ensure it returns an array
+            $parsedComments = YAML::file($file)->parse();
+
+            // Only merge if $parsedComments is an array
+            if (is_array($parsedComments)) {
+                $comments = array_merge($comments, $parsedComments);
+            }
         }
 
         return $comments;
+    }
+
+    public static function find($commentId)
+    {
+        $comments = self::allComments();
+
+        return collect($comments)->firstWhere('id', $commentId);
+    }
+
+    public static function findById($commentId)
+    {
+        $comments = self::allComments();
+
+        return collect($comments)->firstWhere('comment_id', $commentId);
+    }
+
+    public static function destroy($commentId)
+    {
+        $comments = self::allComments();
+
+        $comments = collect($comments)->reject(function ($comment) use ($commentId) {
+            return $comment['post_id'] === $commentId;
+        });
+
+        $files = File::getFiles(base_path('resources/comments'));
+
+        foreach ($files as $file) {
+            $comments = collect(YAML::file($file)->parse())->reject(function ($comment) use ($commentId) {
+                return $comment['post_id'] === $commentId;
+            });
+
+            File::put($file, YAML::dump($comments));
+        }
     }
 }
