@@ -37,7 +37,7 @@ To display a comments form on any page, include the {{ comments:form }} tag in y
 To render a list of comments for a post, use the following:
 
 ```antlers
-{{ comments:list }}
+{{ comment:show }}
 ```
 
 Admin Dashboard
@@ -50,13 +50,19 @@ Users must be registered and logged in to leave comments. When a user registers,
 Register Form: Use the following to include a registration form in your template:
 
 ```antlers
-{{ registration:form }}
+{{ auth:signup }}
 ```
 
 Login Form: To render a login form:
 
 ```antlers
-{{ login:form }}
+{{ auth:login }}
+```
+
+Profile: To render a profile page
+
+```
+{{ auth:profile }}
 ```
 
 ## Code Structure

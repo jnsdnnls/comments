@@ -10,17 +10,17 @@ class SendPasswordEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $password;
+    public $code;
 
-    public function __construct($password)
+    public function __construct($code)
     {
-        $this->password = $password;
+        $this->code = $code;
     }
 
     public function build()
     {
-        return $this->subject('Your Account Password')
-            ->view('comments::emails.password')
-            ->with('password', $this->password);
+        return $this->subject('Your Verification Code')->view('comments::emails.password')->with([
+            'code' => $this->code,
+        ]);
     }
 }

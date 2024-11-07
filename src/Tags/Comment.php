@@ -15,8 +15,8 @@ class Comment extends Tags
 
     public function show()
     {
-        $postId = $this->params->get('post_id');
-        $comments = CommentModel::all($postId);
+        $entryId = $this->context->get('id');
+        $comments = CommentModel::all($entryId);
 
         $sortedComments = collect($comments)->sortByDesc(function ($comment) {
             return Carbon::parse($comment['created_at']);
@@ -27,8 +27,9 @@ class Comment extends Tags
 
     public function form()
     {
-        $postId = $this->params->get('post_id');
 
-        return view('comments::tags.commentsForm', compact('postId'));
+        $entryId = $this->context->get('id');
+
+        return view('comments::tags.commentsForm', compact('entryId'));
     }
 }

@@ -7,7 +7,6 @@ use Statamic\Facades\YAML;
 
 class CommentModel
 {
-
     protected $data;
     protected $postId;
 
@@ -19,10 +18,16 @@ class CommentModel
 
     public function save()
     {
-        $filePath = base_path("resources/comments/{$this->postId}.yaml");
+        $directoryPath = base_path('resources/comments');
+        $filePath = "{$directoryPath}/{$this->postId}.yaml";
+
+        // Ensure the directory exists
+        if (!File::exists($directoryPath)) {
+            File::makeDirectory($directoryPath, 0755, true);
+        }
 
         // Load existing comments if they exist
-        $comments = File::exists($filePath) ? Yaml::file($filePath)->parse() : [];
+        $comments = File::exists($filePath) ? YAML::file($filePath)->parse() : [];
 
         // Append the new comment
         $comments[] = $this->data;
@@ -44,9 +49,15 @@ class CommentModel
 
     public static function allComments()
     {
-        $comments = [];
+        $directoryPath = base_path('resources/comments');
 
-        $files = File::getFiles(base_path('resources/comments'));
+        // Ensure the directory exists
+        if (!File::exists($directoryPath)) {
+            return [];
+        }
+
+        $comments = [];
+        $files = File::getFiles($directoryPath);
 
         foreach ($files as $file) {
             // Parse the YAML file and ensure it returns an array
@@ -77,20 +88,21 @@ class CommentModel
 
     public static function destroy($commentId)
     {
-        $comments = self::allComments();
+        $directoryPath = base_path('resources/comments');
 
-        $comments = collect($comments)->reject(function ($comment) use ($commentId) {
-            return $comment['post_id'] === $commentId;
-        });
+        if (!File::exists($directoryPath)) {
+            return;
+        }
 
-        $files = File::getFiles(base_path('resources/comments'));
+        $files = File::getFiles($directoryPath);
 
         foreach ($files as $file) {
+            // Load comments from file, filter them, and save back
             $comments = collect(YAML::file($file)->parse())->reject(function ($comment) use ($commentId) {
-                return $comment['post_id'] === $commentId;
+                return $comment['comment_id'] === $commentId;
             });
 
-            File::put($file, YAML::dump($comments));
+            File::put($file, YAML::dump($comments->values()->all()));
         }
     }
 }

@@ -2,7 +2,9 @@
     Leave a Comment
 </h3>
 
-@if(auth()->check())
+@if(session()->has('authenticated_visitor'))
+
+@if(!isset($isBanned) || !$isBanned)
 <form action="{{ url('comments') }}" method="post" class="mt-4 space-y-4">
     @csrf
 
@@ -15,7 +17,7 @@
             required></textarea>
     </div>
 
-    <input type="hidden" name="post_id" value="{{ $postId }}">
+    <input type="hidden" name="entry_id" value="{{ $entryId }}">
 
     <div class="text-center">
         <button
@@ -25,6 +27,10 @@
         </button>
     </div>
 </form>
+@else
+<p class="text-red-600">You are banned from commenting.</p>
+@endif
+
 @else
 <p class="text-green-600">Please <a href="{{ route('register') }}" class="text-blue-500 underline">register</a> or <a href="{{ route('login') }}" class="text-blue-500 underline">log in</a> to leave a comment.</p>
 @endif

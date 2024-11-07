@@ -9,7 +9,6 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $tags = [
         Tags\Comment::class,
-        Tags\Profile::class,
         Tags\Auth::class,
     ];
 
@@ -46,7 +45,7 @@ class ServiceProvider extends AddonServiceProvider
                 ->active('comments')
                 ->children([
                     'Comments' => cp_route('comments.index'),
-                    'Users' => cp_route('comments.index'),
+                    'Users' => cp_route('comments.users.index'),
                 ]);
         });
     }

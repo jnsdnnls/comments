@@ -4,7 +4,6 @@ namespace Jnsdnnls\Comments\Http;
 
 use Illuminate\Http\Request;
 use Jnsdnnls\Comments\Models\CommentModel;
-
 use Statamic\Http\Controllers\Controller;
 
 class CommentCPController extends Controller

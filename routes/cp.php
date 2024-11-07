@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Jnsdnnls\Comments\Http\AuthCPController;
 use Jnsdnnls\Comments\Http\CommentCPController;
 
 
@@ -10,3 +11,7 @@ Route::prefix('comments')->group(function () {
     Route::put('/{comment_id}', [CommentCPController::class, 'update'])->name('comments.update');
     Route::delete('/{comment_id}', [CommentCPController::class, 'destroy'])->name('comments.delete');
 });
+
+Route::get('/comments/users', [AuthCPController::class, 'index'])->name('comments.users.index');
+// Route to ban a user
+Route::post('/comments/users/{userId}/ban', [AuthCPController::class, 'ban'])->name('comments.users.ban');

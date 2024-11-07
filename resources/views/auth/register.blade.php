@@ -1,12 +1,12 @@
 <h1 class="text-2xl font-bold text-center mb-6 mt-8">Register</h1>
-<form method="POST">
+<form method="POST" action="{{ route('register') }}">
     @csrf
     <div class="mb-4">
         <input type="email" name="email" placeholder="Email" required
             class="flex w-full items-center justify-between p-5 border-t border-green-400 text-green-400 hover:text-green-900 " />
     </div>
     <div class="mb-4">
-        <input type="text" name="name" placeholder="Name" required
+        <input type="text" name="name" placeholder="Full Name" required
             class="flex w-full items-center justify-between p-5 border-t border-green-400 text-green-400 hover:text-green-900  " />
     </div>
     <button type="submit"
